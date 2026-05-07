@@ -215,23 +215,51 @@
     });
 
     // Script Tambahan untuk Export ke JPG
-    document.getElementById('btn-export').addEventListener('click', function() {
-        const report = document.getElementById('report-content');
+document.getElementById('btn-export').addEventListener('click', function() {
+    const report = document.getElementById('report-content');
+    const textarea = report.querySelector("textarea");
+    
+    // 1. Buat elemen DIV pengganti sementara
+    const tempDiv = document.createElement("div");
+    
+    // 2. Salin teks dari textarea ke DIV
+    tempDiv.innerText = textarea.value;
+    
+    // 3. Berikan styling agar DIV terlihat sama dengan textarea saat diekstrak
+    tempDiv.style.width = "100%";
+    tempDiv.style.minHeight = "120px"; // Sesuaikan dengan rows="6"
+    tempDiv.style.padding = "10px";
+    tempDiv.style.fontSize = "12px";
+    tempDiv.style.lineHeight = "1.5";
+    tempDiv.style.fontFamily = "'Courier New', Courier, monospace";
+    tempDiv.style.whiteSpace = "pre-wrap"; // Paksa pindah baris (wrapping)
+    tempDiv.style.wordWrap = "break-word";
+    tempDiv.style.boxSizing = "border-box";
+    tempDiv.style.border = "none";
+
+    // 4. Sembunyikan textarea asli dan tampilkan DIV sementara
+    textarea.style.display = "none";
+    textarea.parentNode.appendChild(tempDiv);
+
+    // 5. Jalankan html2canvas
+    html2canvas(report, {
+        scale: 2, 
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        logging: false
+    }).then(canvas => {
+        const image = canvas.toDataURL("image/jpeg", 0.95);
         
-        html2canvas(report, {
-            scale: 2, // Meningkatkan kualitas gambar agar tajam (HD)
-            useCORS: true,
-            backgroundColor: "#ffffff"
-        }).then(canvas => {
-            const image = canvas.toDataURL("image/jpeg", 0.95); // Kualitas tinggi
-            
-            // Buat tautan download otomatis
-            const link = document.createElement('a');
-            link.download = 'LSSD-Incident-Report.jpg';
-            link.href = image;
-            link.click();
-        });
+        const link = document.createElement('a');
+        link.download = 'LSSD-Incident-Report.jpg';
+        link.href = image;
+        link.click();
+
+        // 6. KEMBALIKAN KE SEMULA: Hapus DIV dan munculkan lagi textarea
+        textarea.style.display = "block";
+        tempDiv.remove();
     });
+});
 </script>
 </body>
 </html>

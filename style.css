@@ -101,6 +101,9 @@ textarea {
     box-sizing: border-box;
     border: none;
     resize: none;
+    white-space: pre-wrap; /* Tambahkan ini */
+    word-wrap: break-word; /* Tambahkan ini */
+    overflow: hidden;      /* Mencegah scrollbar muncul di gambar */
 }
 
 .checkbox-grid {
