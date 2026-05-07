@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LSSD Incident Report Form</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<div class="report-container" id="report-content">
+    <header class="report-header">
+        <div class="header-main">
+            <h2>COUNTY OF LOS SANTOS</h2>
+            <h1>SHERIFF'S DEPARTMENT</h1>
+            <p class="sa-state">San Andreas State</p>
+            <h3>INCIDENT REPORT</h3>
+        </div>
+        <div class="official-use">FOR OFFICIAL USE ONLY</div>
+    </header>
+
+    <form>
+        <div class="row top-bar">
+            <div class="input-group">
+                <label>URN:</label>
+                <input type="text" placeholder="26-XXXX-CCCC">
+            </div>
+            <div class="input-group">
+                <label>DR#:</label>
+                <input type="text" placeholder="26-CCCC-CCCC">
+            </div>
+            <div class="input-group">
+                <label>STATION:</label>
+                <select>
+                    <option>-</option>
+                    <option>East Los Santos</option>
+                    <option>Vinewood</option>
+                    <option>Ganton</option>
+                </select>
+            </div>
+        </div>
+
+        <section class="form-section">
+            <div class="section-title">INCIDENT INFORMATION</div>
+            <div class="grid-4">
+                <div class="input-group"><label>DATE:</label><input type="date"></div>
+                <div class="input-group"><label>TIME:</label><input type="time"></div>
+                <div class="input-group"><label>BEAT:</label><input type="text"></div>
+                <div class="input-group"><label>UNIT:</label><input type="text"></div>
+            </div>
+            <div class="grid-1">
+                <div class="input-group"><label>LOCATION:</label><input type="text" placeholder="street address, District, Los Santos"></div>
+            </div>
+            <div class="grid-2">
+                <div class="input-group">
+                    <label>INCIDENT TYPE:</label>
+                    <select>
+                        <option>-</option>
+                        <option>187 - Homicide</option>
+                        <option>211 - Robbery</option>
+                        <option>459 - Burglary</option>
+                        <option>245 - Assault</option>
+                        <option>487 - Grand Theft</option>
+                        <option>484 - Petty Theft</option>
+                        <option>595 - Vandalism</option>
+                        <option>647 - public disturbance</option>
+                        <option>Vehicle Code</option>
+                        <option>Other</option>
+                </select>
+                </div>
+                <div class="input-group">
+                    <label>CLASSIFICATION:</label>
+                    <select>
+                        <option>-</option>
+                        <option>FELONY</option>
+                        <option>MISDEMEANOR</option>
+                        <option>INFRACTION</option>
+                        <option>CIVIL</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <div class="grid-2-col">
+            <section class="form-section">
+                <div class="section-title">VICTIM/REPORTING PARTY</div>
+                <div class="input-group"><label>NAME:</label><input type="text"></div>
+                <div class="grid-3">
+                    <div class="input-group"><label>AGE:</label><input type="text"></div>
+                    <div class="input-group"><label>SEX:</label>
+                        <select>
+                            <option>-</option>
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select>
+                    </div>
+                    <div class="input-group"><label>RACE:</label>
+                        <select>
+                            <option>-</option>
+                            <option>White</option>
+                            <option>Black</option>
+                            <option>Hispanic</option>
+                            <option>Asian</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group"><label>PHONE:</label><input type="text"></div>
+            </section>
+
+            <section class="form-section">
+                <div class="section-title">SUSPECT INFORMATION</div>
+                <div class="input-group"><label>NAME:</label><input type="text"></div>
+                <div class="grid-2">
+                    <div class="input-group"><label>AGE:</label><input type="text"></div>
+                    <div class="input-group"><label>SEX:</label>
+                        <select>
+                            <option>-</option>
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group"><label>DESCRIPTION:</label><input type="text"></div>
+            </section>
+        </div>
+
+        <section class="form-section">
+            <div class="section-title">NARRATIVE SUMMARY</div>
+            <textarea rows="6" placeholder="Brief description of incident: What happened, when, where. Actions taken by deputies. Statements from parties involved. Any follow-up required."></textarea>
+        </section>
+
+        <div class="grid-2-col">
+            <section class="form-section">
+                <div class="section-title">REPORTING DEPUTY</div>
+                <div class="input-group"><label>NAME:</label><input type="text" id="deputy-name-input" placeholder="Lastname, Firstname"></div>
+                <div class="grid-2">
+                    <div class="input-group"><label>BADGE#:</label><input type="text"></div>
+                    <div class="input-group"><label>UNIT:</label><input type="text"></div>
+                </div>
+                <div class="input-group"><label>SUPERVISOR:</label><input type="text" id="supervisor-name-input" placeholder="Lastname, Firstname"></div>
+            </section>
+
+            <section class="form-section">
+                <div class="section-title">DISPOSITION</div>
+                <div class="checkbox-grid">
+                    <label><input type="checkbox"> REPORT COMPLETED</label>
+                    <label><input type="checkbox"> ARREST MADE</label>
+                    <label><input type="checkbox"> CITATION ISSUED</label>
+                    <label><input type="checkbox"> TO DETECTIVE</label>
+                    <label><input type="checkbox"> UNFOUNDED</label>
+                    <label><input type="checkbox"> CIVIL MATTER</label>
+                </div>
+            </section>
+        </div>
+
+        <footer class="form-footer">
+            <div class="signature-block">
+                <input type="text" id="deputy-sig-input" class="sig-input" placeholder="Lastname, Firstname" readonly>
+                <p>REPORTING DEPUTY</p>
+                <input type="date">
+            </div>
+            <div class="signature-block">
+                <input type="text" id="supervisor-sig-input" class="sig-input" placeholder="Lastname, Firstname" readonly>
+                <p>SUPERVISOR</p>
+                <input type="date">
+            </div>
+        </footer>
+    </form>
+    <div class="footer-note">LSSD SH-R-49 (Rev 2026) - FOR OFFICIAL USE ONLY</div>
+</div>
+
+<div style="width: 850px; display: flex; justify-content: flex-end; margin-bottom: 15px; margin-top: 15px; "class="no-print">
+    <button id="btn-export" style="
+        padding: 10px 24px; 
+        cursor: pointer; 
+        background: #1a3c15; 
+        color: white; 
+        border: 2px solid #0d260d; 
+        border-radius: 6px; 
+        font-weight: bold;
+        transition: 0.3s;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        display: flex;
+        align-items: center;
+        gap: 8px;">
+        <span style="font-size: 16px;">💾</span> EXPORT KE JPG
+    </button>
+</div>
+
+<script>
+    // Ambil elemen input untuk deputy
+    const nameInput = document.getElementById('deputy-name-input');
+    const sigInput = document.getElementById('deputy-sig-input');
+
+    nameInput.addEventListener('input', function() {
+        sigInput.value = nameInput.value;
+    });
+
+    // Lakukan hal yang sama untuk supervisor
+    const supervisorNameInput = document.getElementById('supervisor-name-input');
+    const supervisorSigInput = document.getElementById('supervisor-sig-input');
+
+    supervisorNameInput.addEventListener('input', function() {
+        supervisorSigInput.value = supervisorNameInput.value;
+    });
+
+    // Script Tambahan untuk Export ke JPG
+    document.getElementById('btn-export').addEventListener('click', function() {
+        const report = document.getElementById('report-content');
+        
+        html2canvas(report, {
+            scale: 2, // Meningkatkan kualitas gambar agar tajam (HD)
+            useCORS: true,
+            backgroundColor: "#ffffff"
+        }).then(canvas => {
+            const image = canvas.toDataURL("image/jpeg", 0.95); // Kualitas tinggi
+            
+            // Buat tautan download otomatis
+            const link = document.createElement('a');
+            link.download = 'LSSD-Incident-Report.jpg';
+            link.href = image;
+            link.click();
+        });
+    });
+</script>
+</body>
+</html>

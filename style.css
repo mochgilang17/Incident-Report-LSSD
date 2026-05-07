@@ -1,0 +1,158 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    font-size: 12px;
+}
+
+.report-container {
+    background-color: white;
+    width: 850px;
+    border: 2px solid #000;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.report-header {
+    text-align: center;
+    position: relative;
+    border-bottom: 2px solid #000;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.official-use {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100px;
+    font-size: 10px;
+    text-align: right;
+    font-weight: bold;
+}
+
+h1, h2, h3 { margin: 2px 0; }
+h1 { font-size: 19px; text-transform: uppercase; }
+h2 { font-size: 22px; font-weight: normal; color: darkgreen; font-weight: bold; }
+h3 { text-decoration: underline; margin-top: 10px; }
+
+.sa-state {
+    font-size: 14px;
+    margin: 2px 0;
+}
+
+.form-section {
+    border: 1px solid #000;
+    margin-bottom: 10px;
+}
+
+.section-title {
+    background-color: #e0e0e0;
+    padding: 3px 10px;
+    font-weight: bold;
+    border-bottom: 1px solid #000;
+    font-size: 11px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border-bottom: 0.5px solid #ccc;
+}
+
+.input-group label {
+    margin-right: 10px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+input[type="text"], input[type="date"], input[type="time"], select, textarea {
+    border: none;
+    border-bottom: 1px solid #eee;
+    width: 100%;
+    outline: none;
+    font-family: 'Courier New', Courier, monospace; /* Style ketikan polisi */
+}
+
+.top-bar {
+    display: flex;
+    border: 2px solid #000;
+    margin-bottom: 10px;
+}
+
+.top-bar .input-group {
+    border: none;
+    border-right: 1px solid #000;
+    flex: 1;
+}
+
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+.grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); }
+.grid-2-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: none;
+    resize: none;
+}
+
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 10px;
+    gap: 10px;
+}
+
+.form-footer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+    border-top: 2px solid #000;
+    padding-top: 20px;
+}
+
+.signature-block {
+    text-align: center;
+    width: 200px;
+}
+
+.sig-input {
+    font-family: 'Brush Script MT', cursive;
+    font-size: 18px;
+    text-align: center;
+}
+
+.footer-note {
+    text-align: center;
+    font-size: 9px;
+    margin-top: 15px;
+    color: #555;
+}
+
+/* Penyesuaian Ekspor Gambar */
+#report-content {
+    box-shadow: none !important;
+}
+
+@media print {
+    .no-print {
+        display: none;
+    }
+}
+
+#btn-export:hover {
+    background-color: #26591f !important;
+    box-shadow: 4px 4px 10px rgba(0,0,0,0.3);
+    transform: translateY(-1px);
+}
+
+#btn-export:active {
+    transform: translateY(1px);
+}
