@@ -217,47 +217,80 @@
     // Script Tambahan untuk Export ke JPG
 document.getElementById('btn-export').addEventListener('click', function() {
     const report = document.getElementById('report-content');
-    const textarea = report.querySelector("textarea");
-    
-    // 1. Buat elemen DIV pengganti sementara
-    const tempDiv = document.createElement("div");
-    
-    // 2. Salin teks dari textarea ke DIV
-    tempDiv.innerText = textarea.value;
-    
-    // 3. Berikan styling agar DIV terlihat sama dengan textarea saat diekstrak
-    tempDiv.style.width = "100%";
-    tempDiv.style.minHeight = "120px"; // Sesuaikan dengan rows="6"
-    tempDiv.style.padding = "10px";
-    tempDiv.style.fontSize = "12px";
-    tempDiv.style.lineHeight = "1.5";
-    tempDiv.style.fontFamily = "'Courier New', Courier, monospace";
-    tempDiv.style.whiteSpace = "pre-wrap"; // Paksa pindah baris (wrapping)
-    tempDiv.style.wordWrap = "break-word";
-    tempDiv.style.boxSizing = "border-box";
-    tempDiv.style.border = "none";
+    const inputs = report.querySelectorAll("input, textarea, select");
+    const tempReplacements = [];
 
-    // 4. Sembunyikan textarea asli dan tampilkan DIV sementara
-    textarea.style.display = "none";
-    textarea.parentNode.appendChild(tempDiv);
+    // 1. Sembunyikan tombol agar tidak mengganggu proses (opsional)
+    this.style.display = "none";
 
-    // 5. Jalankan html2canvas
+    // 2. Loop melalui semua elemen form untuk membuat versi statis (Span/Div)
+    inputs.forEach(el => {
+        const replacement = document.createElement("div");
+        
+        // Ambil nilai: jika Select, ambil teks yang dipilih. Jika Input/Textarea, ambil value.
+        let val = "";
+        if (el.tagName === "SELECT") {
+            val = el.options[el.selectedIndex].text;
+            if (val === "-") val = ""; // Jangan tampilkan tanda minus jika belum dipilih
+        } else {
+            val = el.value;
+        }
+
+        replacement.innerText = val || " "; // Beri spasi jika kosong agar layout tidak geser
+        
+        // Salin gaya visual agar terlihat mirip
+        const style = window.getComputedStyle(el);
+        replacement.style.fontFamily = style.fontFamily;
+        replacement.style.fontSize = style.fontSize;
+        replacement.style.color = "#333";
+        replacement.style.padding = style.padding;
+        replacement.style.lineHeight = style.lineHeight;
+        replacement.style.whiteSpace = "pre-wrap";
+        replacement.style.wordWrap = "break-word";
+        replacement.style.display = "inline-block";
+        
+        // Khusus untuk input yang punya border bawah (sesuai style LSSD)
+        if (el.tagName === "INPUT" && el.type !== "checkbox") {
+            replacement.style.borderBottom = "1px solid #eee";
+            replacement.style.minWidth = el.offsetWidth + "px";
+        }
+        
+        // Khusus untuk Textarea (Narrative)
+        if (el.tagName === "TEXTAREA") {
+            replacement.style.width = "100%";
+            replacement.style.minHeight = el.offsetHeight + "px";
+            replacement.style.display = "block";
+        }
+
+        // Sembunyikan elemen asli dan pasang penggantinya
+        el.style.display = "none";
+        el.parentNode.insertBefore(replacement, el);
+        tempReplacements.push({ original: el, temp: replacement });
+    });
+
+    // 3. Jalankan html2canvas dengan skala lebih tinggi agar tajam (HD)
     html2canvas(report, {
-        scale: 2, 
+        scale: 3, 
         useCORS: true,
         backgroundColor: "#ffffff",
-        logging: false
+        logging: false,
+        // Memastikan lebar container tertangkap penuh
+        windowWidth: report.scrollWidth,
+        windowHeight: report.scrollHeight
     }).then(canvas => {
-        const image = canvas.toDataURL("image/jpeg", 0.95);
+        const image = canvas.toDataURL("image/jpeg", 1.0);
         
         const link = document.createElement('a');
-        link.download = 'LSSD-Incident-Report.jpg';
+        link.download = `LSSD-Report-${Date.now()}.jpg`;
         link.href = image;
         link.click();
 
-        // 6. KEMBALIKAN KE SEMULA: Hapus DIV dan munculkan lagi textarea
-        textarea.style.display = "block";
-        tempDiv.remove();
+        // 4. KEMBALIKAN SEMUA KE SEMULA
+        tempReplacements.forEach(item => {
+            item.original.style.display = "";
+            item.temp.remove();
+        });
+        this.style.display = "flex";
     });
 });
 </script>
