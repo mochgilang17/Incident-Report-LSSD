@@ -223,48 +223,67 @@ document.getElementById('btn-export').addEventListener('click', function() {
     // 1. Sembunyikan tombol agar tidak mengganggu proses (opsional)
     this.style.display = "none";
 
-    // 2. Loop melalui semua elemen form untuk membuat versi statis (Span/Div)
+// 2. Loop melalui semua elemen form untuk membuat versi statis (Span/Div)
     inputs.forEach(el => {
         const replacement = document.createElement("div");
         
-        // Ambil nilai: jika Select, ambil teks yang dipilih. Jika Input/Textarea, ambil value.
         let val = "";
         if (el.tagName === "SELECT") {
             val = el.options[el.selectedIndex].text;
-            if (val === "-") val = ""; // Jangan tampilkan tanda minus jika belum dipilih
+            if (val === "-") val = "";
+        } else if (el.type === "checkbox") {
+            // Logika khusus untuk checkbox untuk menghindari masalah "on on on"
+            val = el.checked ? "☑" : "☐"; // Menggunakan simbol Unicode untuk centang/kotak kosong
+            replacement.style.fontFamily = "'Arial', sans-serif"; // Font standar agar simbol terbaca
         } else {
             val = el.value;
         }
 
-        replacement.innerText = val || " "; // Beri spasi jika kosong agar layout tidak geser
+        replacement.innerText = val || " "; 
         
-        // Salin gaya visual agar terlihat mirip
         const style = window.getComputedStyle(el);
-        replacement.style.fontFamily = style.fontFamily;
+        // Pertahankan gaya font asli kecuali untuk checkbox yang sudah kita atur di atas
+        if (el.type !== "checkbox") {
+            replacement.style.fontFamily = style.fontFamily;
+        }
         replacement.style.fontSize = style.fontSize;
         replacement.style.color = "#333";
         replacement.style.padding = style.padding;
         replacement.style.lineHeight = style.lineHeight;
         replacement.style.whiteSpace = "pre-wrap";
         replacement.style.wordWrap = "break-word";
-        replacement.style.display = "inline-block";
         
-        // Khusus untuk input yang punya border bawah (sesuai style LSSD)
+        // Atur display: checkbox dalam label biasanya butuh penyesuaian agar sejajar teks
+        if (el.type === "checkbox") {
+            replacement.style.display = "inline-block";
+            replacement.style.marginRight = "5px"; // Beri jarak sedikit dari teks label
+            replacement.style.verticalAlign = "middle";
+        } else {
+            replacement.style.display = "inline-block";
+        }
+        
         if (el.tagName === "INPUT" && el.type !== "checkbox") {
             replacement.style.borderBottom = "1px solid #eee";
             replacement.style.minWidth = el.offsetWidth + "px";
         }
         
-        // Khusus untuk Textarea (Narrative)
         if (el.tagName === "TEXTAREA") {
             replacement.style.width = "100%";
             replacement.style.minHeight = el.offsetHeight + "px";
             replacement.style.display = "block";
         }
 
-        // Sembunyikan elemen asli dan pasang penggantinya
-        el.style.display = "none";
-        el.parentNode.insertBefore(replacement, el);
+        // Jangan sembunyikan checkbox asli, tapi buat transparan & tidak bisa diklik
+        // Ini membantu html2canvas mempertahankan layout label yang benar
+        if (el.type === "checkbox") {
+            el.style.opacity = "0";
+            el.style.pointerEvents = "none";
+            // Sisipkan pengganti TEPAT sebelum elemen asli di dalam label
+            el.parentNode.insertBefore(replacement, el);
+        } else {
+            el.style.display = "none";
+            el.parentNode.insertBefore(replacement, el);
+        }
         tempReplacements.push({ original: el, temp: replacement });
     });
 
@@ -293,6 +312,18 @@ document.getElementById('btn-export').addEventListener('click', function() {
         this.style.display = "flex";
     });
 });
+// 4. KEMBALIKAN SEMUA KE SEMULA
+        tempReplacements.forEach(item => {
+            // Logika pemulihan yang disesuaikan
+            if (item.original.type === "checkbox") {
+                item.original.style.opacity = "";
+                item.original.style.pointerEvents = "";
+            } else {
+                item.original.style.display = "";
+            }
+            item.temp.remove();
+        });
+        this.style.display = "flex";
 </script>
 </body>
 </html>
